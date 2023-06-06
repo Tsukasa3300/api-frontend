@@ -1,8 +1,12 @@
-import './App.css';
+import './App.css'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom'
+import Todo from './todos/[id].js';
 
 function App() {
+  
+  // GETリクエスト
   const [todos, setTodos] = useState([])
 
   useEffect(() => { 
@@ -11,16 +15,65 @@ function App() {
       const data = res.data
       setTodos(data);
     }
-    fetchData();
-    
+    fetchData(); 
   }, []);
+  // 
+
+
+  // POSTリクエスト
+  const [content, setContent] = useState('')
+
+  const addTodo = async (e) => {
+    e.preventDefault();
+    await axios.post(`http://localhost:3000/api/v1/todos`, {
+      content: content,
+    });
+    window.location.reload();
+  }
+  // 
+
+
+  // DELETEリクエスト
+  const deleteTodo = async (id) => {
+    await axios.delete(`http://localhost:3000/api/v1/todos/${id}`);
+    window.location.reload();
+  }
+  //
+
 
   return (
-    <div className="App">
-      {todos.map((todo) => (
-      <div key={todo.id}>{todo.content}</div>
-    ))}
-    </div>
+    <Router>
+      <div className="App">
+        {todos.map((todo) => (
+          <div key={todo.id}>
+
+
+            {/* GETリクエスト */}
+            <Link to={`/todos/${todo.id}`}>{todo.content}</Link>
+
+
+            {/* DELETEリクエスト */}
+            <button onClick={() => deleteTodo(todo.id)}>削除</button>
+
+
+          </div>
+        ))}
+        
+
+        {/* POSTリクエスト */}
+        <form onSubmit={addTodo}>
+          <textarea onChange = {(e) => setContent(e.target.value)} />
+          <button type="submit">投稿</button>
+        </form>
+
+
+      </div>
+      
+      <Routes>
+        <Route path="/todos/:id" element={<Todo />} />
+      </Routes>
+    
+  </Router>
   );
 }
 
