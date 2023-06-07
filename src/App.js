@@ -54,13 +54,17 @@ function Main() {
               <Link to={`/todos/${todo.id}`}>{todo.content}</Link>
             </div>
 
+
+            {/* PUTリクエスト */}
             <div class = "PUT">
               <Link to={`/edit_todos/${todo.id}`}>編集</Link>
             </div>
 
-            {/* DELETEリクエスト */}
-            <button onClick={() => deleteTodo(todo.id)}>削除</button>
 
+            {/* DELETEリクエスト */}
+            <div class = "DELETE">
+              <button onClick={() => deleteTodo(todo.id)}>削除</button>
+            </div>
 
           </div>
         ))}
