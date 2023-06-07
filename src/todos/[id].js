@@ -2,8 +2,8 @@ import React from 'react'
 import  { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom'
 
+// GETリクエスト(show)
 const Todo = () => {
   const [todo, setTodos] = useState([])
   const params = useParams();
@@ -24,5 +24,6 @@ const Todo = () => {
     </div>
   );
 };
+// 
 
 export default Todo;

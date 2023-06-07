@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom'
 import Todo from './todos/[id].js';
+import EditTodo from './edit_todos/[id].js';
 
-function App() {
+function Main() {
   
   // GETリクエスト
   const [todos, setTodos] = useState([])
@@ -49,8 +50,13 @@ function App() {
 
 
             {/* GETリクエスト */}
-            <Link to={`/todos/${todo.id}`}>{todo.content}</Link>
+            <div class = "GET">
+              <Link to={`/todos/${todo.id}`}>{todo.content}</Link>
+            </div>
 
+            <div class = "PUT">
+              <Link to={`/edit_todos/${todo.id}`}>編集</Link>
+            </div>
 
             {/* DELETEリクエスト */}
             <button onClick={() => deleteTodo(todo.id)}>削除</button>
@@ -71,10 +77,11 @@ function App() {
       
       <Routes>
         <Route path="/todos/:id" element={<Todo />} />
+        <Route path="/edit_todos/:id" element={<EditTodo />} />
       </Routes>
     
   </Router>
   );
 }
 
-export default App;
+export default Main;
