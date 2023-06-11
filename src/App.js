@@ -35,8 +35,8 @@ function Main() {
 
 
   // DELETEリクエスト
-  const deleteTodo = async (id) => {
-    await axios.delete(`http://localhost:3000/api/v1/todos/${id}`);
+  const deleteTodo = async (postId) => {
+    await axios.delete(`http://localhost:3000/api/v1/todos/${postId}`);
     window.location.reload();
   }
   //
@@ -49,7 +49,7 @@ function Main() {
           <div key={todo.id}>
 
 
-            {/* GETリクエスト */}
+            {/* GETリクエスト(show) */}
             <div class = "GET">
               <Link to={`/todos/${todo.id}`}>{todo.content}</Link>
             </div>
