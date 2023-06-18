@@ -49,7 +49,6 @@ const Todo = () => {
   //  
 
 
-
   return (
     <div className="App">
       {todo.content}
