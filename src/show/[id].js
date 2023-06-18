@@ -56,7 +56,7 @@ const Todo = () => {
       {/* POSTリクエスト[Comment] */}
       <form onSubmit={addComment}>
         <textarea onChange = {(e) => setContent(e.target.value)} />
-        <button type="submit">投稿</button>
+        <button type="submit">コメントを投稿</button>
       </form>
       
       {comment.map((c) => (
