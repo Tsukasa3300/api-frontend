@@ -20,7 +20,7 @@ const Edit = () => {
     <div>
       <div className="App">
         <form onSubmit={EditTodo}>
-          <textarea onChange = {(e) => setContent(e.target.value)} />
+          <textarea value={content} onChange = {(e) => setContent(e.target.value)} />
           <button type="submit">編集</button>
         </form>      
       </div>

@@ -5,8 +5,38 @@ import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom'
 import Todo from './show/[id].js';
 import EditTodo from './edit/[id].js';
 
-function Main() {
+
+// 4:auth,provider,popupをimportする
+import { auth, googleProvider, githubProvider } from './firebase';
+import { signInWithPopup } from 'firebase/auth';
+// 
+
+
+// 6:useAuthStateをimportする
+import { useAuthState } from 'react-firebase-hooks/auth';
+// 
+
+
+function App() {
+
+
+  // 5:プロバイダーの数だけ関数を記述(引数にauthと各プロバイダー)
+  const signInWithGoogle = () => {
+      signInWithPopup(auth, googleProvider);
+    }; 
   
+  const signInWithGithub = () => {
+      signInWithPopup(auth, githubProvider);
+    };
+  // 
+
+  
+  // 7:以下を記述する
+  const [user] = useAuthState(auth);
+  // 
+  
+
+
   // GETリクエスト
   const [todos, setTodos] = useState([])
 
@@ -45,6 +75,31 @@ function Main() {
   return (
     <Router>
       <div className="App">
+        <div>
+          {/* 8:viewを選別 */}
+          {user ? (
+
+            <div>
+              {/* 10:ログアウトボタン(onClick)を一つ記述 */}
+              <button onClick={() => auth.signOut()}>ログアウトする</button>
+              <img src = {auth.currentUser.photoURL}></img>
+              <p>{auth.currentUser.displayName}</p>
+            </div>
+
+          ) : (
+
+            <div>
+              {/* 9:サインインボタン(onClick)をプロバイダーの数だけ記述 */}
+              <button onClick={signInWithGoogle}>Googleでサインイン</button>
+              <button onClick={signInWithGithub}>Githubでサインイン</button>       
+            </div>   
+
+          ) }
+        
+        </div>
+
+
+
         {todos.map((todo) => (
           <div key={todo.id}>
 
@@ -79,6 +134,8 @@ function Main() {
 
       </div>
       
+
+      {/* routing設定 */}
       <Routes>
         <Route path="/todos/:id" element={<Todo />} />
         <Route path="/edit_todos/:id" element={<EditTodo />} />
@@ -88,4 +145,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default App;
