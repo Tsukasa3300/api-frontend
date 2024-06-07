@@ -2,8 +2,8 @@ import './App.css'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom'
-import Todo from './show/[id].js';
-import EditTodo from './edit/[id].js';
+import Todo from './todos/[id].js';
+import EditTodo from './edit_todos/[id].js';
 
 import { Amplify } from 'aws-amplify';
 import { withAuthenticator} from '@aws-amplify/ui-react';
