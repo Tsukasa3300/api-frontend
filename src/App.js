@@ -5,37 +5,27 @@ import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom'
 import Todo from './show/[id].js';
 import EditTodo from './edit/[id].js';
 
-
-// 4:auth,provider,popupをimportする
-import { auth, googleProvider, githubProvider } from './firebase';
-import { signInWithPopup } from 'firebase/auth';
-// 
-
-
-// 6:useAuthStateをimportする
-import { useAuthState } from 'react-firebase-hooks/auth';
-// 
+import { Amplify } from 'aws-amplify';
+import { withAuthenticator} from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+Amplify.configure({
+  Auth: {
+    region: 'us-east-1',
+    userPoolId: 'us-east-1_31d3GGmCC',
+    userPoolWebClientId: 'b243lhpn3ct9lh6fb3non1br',
+    identityPoolId: 'us-east-1:ed68cda5-65c8-4308-aac9-354df79e8f16',
+    oauth: {
+      domain: 'todocog.auth.us-east-1.amazoncognito.com',
+      scope: ['openid'],
+      redirectSignIn: 'http://localhost:3001/',
+      redirectSignOut: 'http://localhost:3001/',
+      responseType: 'code'
+    }
+  }
+})
 
 
 function App() {
-
-
-  // 5:プロバイダーの数だけ関数を記述(引数にauthと各プロバイダー)
-  const signInWithGoogle = () => {
-      signInWithPopup(auth, googleProvider);
-    }; 
-  
-  const signInWithGithub = () => {
-      signInWithPopup(auth, githubProvider);
-    };
-  // 
-
-  
-  // 7:以下を記述する
-  const [user] = useAuthState(auth);
-  // 
-  
-
 
   // GETリクエスト
   const [todos, setTodos] = useState([])
@@ -49,6 +39,8 @@ function App() {
     fetchData(); 
   }, []);
   // 
+
+
 
 
   // POSTリクエスト
@@ -75,30 +67,6 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <div>
-          {/* 8:viewを選別 */}
-          {user ? (
-
-            <div>
-              {/* 10:ログアウトボタン(onClick)を一つ記述 */}
-              <button onClick={() => auth.signOut()}>ログアウトする</button>
-              <img src = {auth.currentUser.photoURL}></img>
-              <p>{auth.currentUser.displayName}</p>
-            </div>
-
-          ) : (
-
-            <div>
-              {/* 9:サインインボタン(onClick)をプロバイダーの数だけ記述 */}
-              <button onClick={signInWithGoogle}>Googleでサインイン</button>
-              <button onClick={signInWithGithub}>Githubでサインイン</button>       
-            </div>   
-
-          ) }
-        
-        </div>
-
-
 
         {todos.map((todo) => (
           <div key={todo.id}>
@@ -145,4 +113,6 @@ function App() {
   );
 }
 
-export default App;
+export default withAuthenticator(App, {
+        signUpAttributes: ['email'],
+ })

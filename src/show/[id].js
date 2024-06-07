@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 
 // GETリクエスト(show)
 const Todo = () => {
+  
   const [todo, setTodo] = useState([])
   const params = useParams();
     
@@ -41,7 +42,6 @@ const Todo = () => {
     e.preventDefault();
     await axios.post(`http://localhost:3000/api/v1/todos/${params.id}/comments`, {
       content: content,
-      todo_id: params.id,
     });
     setContent(''); 
     window.location.reload();
